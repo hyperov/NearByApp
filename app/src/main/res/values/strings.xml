@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">NearBy App</string>
+
+
+    <string name="CLIENT_SECRET">0AYPFYB0KHRURVAI2EXKLHPMDCE2CI11ZVKQYZUWZBH3YJID</string>
+    <string name="CLIENT_ID">ZDWGQCLTNBRITF0WBYEXTR5U00JHR5CGUK5VSSEKM22SLEB5</string>
+
+
 </resources>

@@ -1,4 +1,4 @@
-package cognitev.reactive.nabil.com.nearbyapp.splash;
+package cognitev.reactive.nabil.com.nearbyapp.splash.presentation;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

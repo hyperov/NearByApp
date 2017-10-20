@@ -1,4 +1,4 @@
-package cognitev.reactive.nabil.com.nearbyapp.splash;
+package cognitev.reactive.nabil.com.nearbyapp.splash.presentation;
 
 import cognitev.reactive.nabil.com.nearbyapp.BasePresenter;
 import cognitev.reactive.nabil.com.nearbyapp.BaseView;
@@ -9,12 +9,12 @@ import cognitev.reactive.nabil.com.nearbyapp.BaseView;
 
 public interface SplashContract {
 
-    public interface Presenter extends BasePresenter {
+    interface Presenter extends BasePresenter {
 
         void getData();
     }
 
-    public interface View extends BaseView<Presenter> {
+    interface View extends BaseView<Presenter> {
 
         //show progress bar
         void showLoadingBar(boolean isShown);

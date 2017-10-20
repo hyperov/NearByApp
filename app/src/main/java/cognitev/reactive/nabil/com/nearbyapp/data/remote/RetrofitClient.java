@@ -1,0 +1,85 @@
+package cognitev.reactive.nabil.com.nearbyapp.data.remote;
+
+import android.support.annotation.NonNull;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CLIENT_ID_KEY;
+import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CLIENT_ID_VALUE;
+import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CLIENT_SECRET_KEY;
+import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CLIENT_SECRET_VALUE;
+import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CONTENT_TYPE_KEY;
+import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CONTENT_TYPE_VALUE;
+
+/**
+ * Created by anabil on 10/20/2017.
+ */
+
+public class RetrofitClient {
+
+    private static final String BASE_URL = "https://api.foursquare.com/v2/venues/";
+    private RetrofitApi retrofitApi;
+
+
+    public RetrofitClient() {
+        initReq();
+    }
+
+    private void initReq() {
+
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
+        OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+
+        okHttpClientBuilder.addInterceptor(httpLoggingInterceptor);
+        okHttpClientBuilder.connectTimeout(10, TimeUnit.SECONDS);
+        okHttpClientBuilder.readTimeout(10, TimeUnit.SECONDS);
+        okHttpClientBuilder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(@NonNull Chain chain) throws IOException {
+
+                Request request = chain.request();
+
+                HttpUrl originalHttpUrl = request.url();
+
+                HttpUrl url = originalHttpUrl.newBuilder()
+                        .addQueryParameter(CLIENT_ID_KEY, CLIENT_ID_VALUE)
+                        .addQueryParameter(CLIENT_SECRET_KEY, CLIENT_SECRET_VALUE)
+                        .build();
+
+
+                Request.Builder builder = request.newBuilder()
+                        .header(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE)
+                        .url(url);
+
+
+                return chain.proceed(builder.build());
+            }
+
+        });
+
+
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClientBuilder.build());
+
+
+        Retrofit retrofit = retrofitBuilder.build();
+        retrofitApi = retrofit.create(RetrofitApi.class);
+
+    }
+
+
+}
