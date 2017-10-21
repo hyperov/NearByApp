@@ -17,8 +17,9 @@ public class SplashPresenter implements SplashContract.Presenter {
 
     }
 
+
     @Override
-    public void getData() {
+    public void getLocations(String location, int radius) {
 
     }
 }

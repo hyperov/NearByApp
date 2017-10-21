@@ -11,7 +11,7 @@ public interface SplashContract {
 
     interface Presenter extends BasePresenter {
 
-        void getData();
+        void getLocations(String location, int radius);
     }
 
     interface View extends BaseView<Presenter> {
