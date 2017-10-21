@@ -1,86 +1,99 @@
 package cognitev.reactive.nabil.com.nearbyapp.data.model;
 
-import java.util.List;
-import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
+import javax.annotation.Generated;
+
 @Generated("com.robohorse.robopojogenerator")
-public class Response{
+public class Response {
 
-	@SerializedName("suggestedFilters")
-	private SuggestedFilters suggestedFilters;
+    @SerializedName("suggestedFilters")
+    private SuggestedFilters suggestedFilters;
 
-	@SerializedName("totalResults")
-	private int totalResults;
+    @SerializedName("totalResults")
+    private int totalResults;
 
-	@SerializedName("headerFullLocation")
-	private String headerFullLocation;
+    @SerializedName("headerFullLocation")
+    private String headerFullLocation;
 
-	@SerializedName("headerLocationGranularity")
-	private String headerLocationGranularity;
+    @SerializedName("headerLocationGranularity")
+    private String headerLocationGranularity;
 
-	@SerializedName("groups")
-	private List<GroupsItem> groups;
+    @SerializedName("groups")
+    private List<GroupsItem> groups;
 
-	@SerializedName("suggestedBounds")
-	private SuggestedBounds suggestedBounds;
+    @SerializedName("suggestedBounds")
+    private SuggestedBounds suggestedBounds;
 
-	@SerializedName("headerLocation")
-	private String headerLocation;
+    @SerializedName("headerLocation")
+    private String headerLocation;
 
-	public void setSuggestedFilters(SuggestedFilters suggestedFilters){
-		this.suggestedFilters = suggestedFilters;
-	}
+    @SerializedName("warning")
+    private Warning warning;
 
-	public SuggestedFilters getSuggestedFilters(){
-		return suggestedFilters;
-	}
+    public void setSuggestedFilters(SuggestedFilters suggestedFilters) {
+        this.suggestedFilters = suggestedFilters;
+    }
 
-	public void setTotalResults(int totalResults){
-		this.totalResults = totalResults;
-	}
+    public SuggestedFilters getSuggestedFilters() {
+        return suggestedFilters;
+    }
 
-	public int getTotalResults(){
-		return totalResults;
-	}
+    public void setTotalResults(int totalResults) {
+        this.totalResults = totalResults;
+    }
 
-	public void setHeaderFullLocation(String headerFullLocation){
-		this.headerFullLocation = headerFullLocation;
-	}
+    public int getTotalResults() {
+        return totalResults;
+    }
 
-	public String getHeaderFullLocation(){
-		return headerFullLocation;
-	}
+    public void setHeaderFullLocation(String headerFullLocation) {
+        this.headerFullLocation = headerFullLocation;
+    }
 
-	public void setHeaderLocationGranularity(String headerLocationGranularity){
-		this.headerLocationGranularity = headerLocationGranularity;
-	}
+    public String getHeaderFullLocation() {
+        return headerFullLocation;
+    }
 
-	public String getHeaderLocationGranularity(){
-		return headerLocationGranularity;
-	}
+    public void setHeaderLocationGranularity(String headerLocationGranularity) {
+        this.headerLocationGranularity = headerLocationGranularity;
+    }
 
-	public void setGroups(List<GroupsItem> groups){
-		this.groups = groups;
-	}
+    public String getHeaderLocationGranularity() {
+        return headerLocationGranularity;
+    }
 
-	public List<GroupsItem> getGroups(){
-		return groups;
-	}
+    public void setGroups(List<GroupsItem> groups) {
+        this.groups = groups;
+    }
 
-	public void setSuggestedBounds(SuggestedBounds suggestedBounds){
-		this.suggestedBounds = suggestedBounds;
-	}
+    public List<GroupsItem> getGroups() {
+        return groups;
+    }
 
-	public SuggestedBounds getSuggestedBounds(){
-		return suggestedBounds;
-	}
+    public void setSuggestedBounds(SuggestedBounds suggestedBounds) {
+        this.suggestedBounds = suggestedBounds;
+    }
 
-	public void setHeaderLocation(String headerLocation){
-		this.headerLocation = headerLocation;
-	}
+    public SuggestedBounds getSuggestedBounds() {
+        return suggestedBounds;
+    }
 
-	public String getHeaderLocation(){
-		return headerLocation;
-	}
+    public void setHeaderLocation(String headerLocation) {
+        this.headerLocation = headerLocation;
+    }
+
+    public String getHeaderLocation() {
+        return headerLocation;
+    }
+
+    public Warning getWarning() {
+        return warning;
+    }
+
+    public void setWarning(Warning warning) {
+        this.warning = warning;
+    }
 }

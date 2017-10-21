@@ -13,12 +13,14 @@ public class LocalRepository implements Repository {
 
     @Override
     public Observable<ApiResponse> getData(String location, int radius, String date) {
+        //not implemented yet
         return null;
     }
 
     //let the input be object
     @Override
     public boolean saveData(String location, int radius, String date) {
+        //not implemented yet
         //insert to local database
 
         return false;

@@ -1,5 +1,9 @@
 package cognitev.reactive.nabil.com.nearbyapp.splash.usecase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import cognitev.reactive.nabil.com.nearbyapp.data.MainRepository;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
 import io.reactivex.Observable;
@@ -18,8 +22,10 @@ public class GetLocationsUseCase implements UseCase {
 
     @Override
     public Observable<ApiResponse> getLocations(String location, int radius, boolean connection) {
-        //get data from local if no connection
-        String date = "";
+
+        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.US);
+        String date = formattedDate.format(Calendar.getInstance().getTime());
+
         return mainRepository.getLocationsAndSaveToCashe(location, radius, date, connection);
 
     }
