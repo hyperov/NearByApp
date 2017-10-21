@@ -1,5 +1,6 @@
 package cognitev.reactive.nabil.com.nearbyapp.data.remote;
 
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

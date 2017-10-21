@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
 import io.reactivex.Observable;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;

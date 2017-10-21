@@ -1,5 +1,6 @@
 package cognitev.reactive.nabil.com.nearbyapp.splash.usecase;
 
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
 import io.reactivex.Observable;
 
 /**

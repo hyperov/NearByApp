@@ -1,6 +1,7 @@
 package cognitev.reactive.nabil.com.nearbyapp.data.local;
 
 import cognitev.reactive.nabil.com.nearbyapp.data.Repository;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
 import io.reactivex.Observable;
 
 /**
