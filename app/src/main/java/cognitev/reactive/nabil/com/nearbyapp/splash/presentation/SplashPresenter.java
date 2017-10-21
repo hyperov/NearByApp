@@ -101,7 +101,8 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     private void displayLocationsViewData(List<ItemsItem> items) {
-        mSubscriptions.add(Observable.fromIterable(items).flatMap(itemsItem ->
+        mSubscriptions.add(
+                Observable.fromIterable(items).flatMap(itemsItem ->
                 {
                     String name = itemsItem.getVenue().getName();
                     String id = itemsItem.getVenue().getId();
