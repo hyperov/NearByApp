@@ -1,5 +1,6 @@
 package cognitev.reactive.nabil.com.nearbyapp.splash.presentation;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,18 +19,41 @@ import cognitev.reactive.nabil.com.nearbyapp.splash.presentation.adapter.Locatio
 public class SplashActivity extends BaseActivity implements SplashContract.View {
 
     @Inject
-    SplashContract.Presenter presenter;
+    SplashPresenter presenter;
 
     RecyclerView locationRecyclerView;
     LocationAdapter locationAdapter;
+
+    public SplashActivity() {
+    }
+
+    //    @Inject
+//    @Override
+//    public SplashContract.Presenter getPresenter() {
+////        presenter = super.getPresenter();
+//        return presenter;
+//    }
+
+    private void setUpProgress() {
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        //progressDialog.setCancelable(false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        setUpProgress();
+//        try {
+//            PresentationComponent presentationComponent = App.getPresentationComponent();
+//            presentationComponent.inject(this);
+//        } catch (Exception e) {
+//            e.getMessage();
+//
+//        }
         initViews();
-
 
 
     }
@@ -37,7 +61,15 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.getLocations("44.3,37.2",100000, AppUtils.isNetworkConnected(this));
+        presenter.takeView(this);
+        presenter.getLocations("44.3,37.2", 100000, AppUtils.isNetworkConnected(this));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.unsubscribe();
+        presenter.dropView();
     }
 
     private void initViews() {
@@ -49,9 +81,9 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
     }
 
 
-    public void setPresenter(SplashContract.Presenter presenter) {
-        this.presenter = presenter;
-    }
+//    public void setPresenter(SplashContract.Presenter presenter) {
+//        this.presenter = presenter;
+//    }
 
     @Override
     public void showLoadingBar(boolean isShown) {
@@ -71,12 +103,21 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
 
     @Override
     public void EmptyData() {
-        Toast.makeText(this,"No data",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "No data", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void displayError() {
-        Toast.makeText(this,"something went wrong",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "something went wrong", Toast.LENGTH_SHORT).show();
 
     }
+
+    protected void showProgress() {
+        progressDialog.show();
+    }
+
+    protected void hideProgress() {
+        progressDialog.dismiss();
+    }
+
 }

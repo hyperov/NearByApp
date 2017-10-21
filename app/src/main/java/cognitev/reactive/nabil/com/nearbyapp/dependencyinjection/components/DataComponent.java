@@ -2,6 +2,7 @@ package cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.components;
 
 import javax.inject.Singleton;
 
+import cognitev.reactive.nabil.com.nearbyapp.data.MainRepository;
 import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.modules.DataModule;
 import dagger.Component;
 
@@ -12,5 +13,6 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {DataModule.class})
-public class DataComponent {
+public interface DataComponent {
+    void inject(MainRepository mainRepository);
 }

@@ -22,6 +22,7 @@ public class MainRepository implements Repository {
     public MainRepository(@Local Repository localRepository, @Remote Repository remoteRepository) {
         this.localRepository = localRepository;
         this.remoteRepository = remoteRepository;
+//        App.getDataComponent().inject(this);
     }
 
     @Override

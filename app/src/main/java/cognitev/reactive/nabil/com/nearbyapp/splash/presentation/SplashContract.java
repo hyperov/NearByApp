@@ -13,7 +13,7 @@ import io.reactivex.Observable;
 
 public interface SplashContract {
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BasePresenter<View> {
 
         Observable<ApiResponse> getLocations(String location, int radius, boolean connection);
     }

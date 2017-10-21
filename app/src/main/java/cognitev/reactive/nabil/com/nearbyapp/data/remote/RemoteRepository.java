@@ -15,8 +15,9 @@ import io.reactivex.Observable;
 public class RemoteRepository implements Repository {
 
     @Inject
-    private RetrofitClient retrofitClient;
+    public RetrofitClient retrofitClient;
 
+    @Inject
     public RemoteRepository(RetrofitClient retrofitClient) {
         this.retrofitClient = retrofitClient;
     }

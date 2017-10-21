@@ -1,5 +1,6 @@
 package cognitev.reactive.nabil.com.nearbyapp.data.local;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cognitev.reactive.nabil.com.nearbyapp.data.Repository;
@@ -13,6 +14,7 @@ import io.reactivex.Observable;
 @Singleton
 public class LocalRepository implements Repository {
 
+    @Inject
     public LocalRepository() {
     }
 

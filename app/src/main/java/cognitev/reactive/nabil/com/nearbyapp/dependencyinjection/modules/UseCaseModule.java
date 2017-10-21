@@ -18,7 +18,6 @@ public class UseCaseModule {
     @Provides
     @Singleton
     public UseCase provideUseCase(MainRepository mainRepository) {
-//        return new UseCaseImp();
         return new GetLocationsUseCase(mainRepository);
     }
 }

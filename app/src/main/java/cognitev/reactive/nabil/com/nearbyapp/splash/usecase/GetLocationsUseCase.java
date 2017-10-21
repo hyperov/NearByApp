@@ -18,7 +18,7 @@ import io.reactivex.Observable;
 @Singleton
 public class GetLocationsUseCase implements UseCase {
 
-    private MainRepository mainRepository;
+    public MainRepository mainRepository;
 
     @Inject
     public GetLocationsUseCase(MainRepository mainRepository) {

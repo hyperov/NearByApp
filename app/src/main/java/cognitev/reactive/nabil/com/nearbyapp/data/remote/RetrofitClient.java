@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
 import io.reactivex.Observable;
 import okhttp3.HttpUrl;
@@ -34,6 +36,7 @@ public class RetrofitClient {
     private RetrofitApi retrofitApi;
 
 
+    @Inject
     public RetrofitClient() {
         initReq();
     }
