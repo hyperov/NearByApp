@@ -1,20 +1,25 @@
 package cognitev.reactive.nabil.com.nearbyapp.data;
 
-import java.io.IOException;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
+import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.Local;
+import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.Remote;
 import io.reactivex.Observable;
 
 /**
  * Created by anabil on 10/21/2017.
  */
 
+@Singleton
 public class MainRepository implements Repository {
 
     private Repository localRepository;
     private Repository remoteRepository;
 
-    public MainRepository(Repository localRepository, Repository remoteRepository) {
+    @Inject
+    public MainRepository(@Local Repository localRepository, @Remote Repository remoteRepository) {
         this.localRepository = localRepository;
         this.remoteRepository = remoteRepository;
     }

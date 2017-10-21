@@ -8,10 +8,15 @@ import android.support.v7.app.AppCompatActivity;
  * Created by anabil on 10/21/2017.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
+    private T presenter;
+
+    void setPresenter(T presenter) {
+        this.presenter = presenter;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void hideProgress() {
         progressDialog.dismiss();
     }
+
 
 
 }

@@ -18,18 +18,22 @@ import cognitev.reactive.nabil.com.nearbyapp.splash.presentation.SplashViewModel
  * Created by anabil on 10/21/2017.
  */
 
-public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
+public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public static final int ITEM_VIEW_TYPE = 0;
     public static final int PROGRESS_ITEM_VIEW_TYPE = 1;
     private boolean showLoader;
 
-    private List<SplashViewModel> mValues;
+    private List<SplashViewModel> splashViewModels;
     private Context context;
 
+    public LocationAdapter(List<SplashViewModel> splashViewModels, Context context) {
+        this.splashViewModels = splashViewModels;
+        this.context = context;
+    }
 
     @Override
-    public LocationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view;
 
@@ -44,13 +48,32 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     }
 
     @Override
-    public void onBindViewHolder(LocationViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
+        LocationViewHolder locationViewHolder;
+        if (holder instanceof ProgressViewHolder) {
+            ProgressViewHolder loaderViewHolder = (ProgressViewHolder) holder;
+            if (showLoader) {
+                loaderViewHolder.mProgressBar.setVisibility(View.VISIBLE);
+            } else {
+                loaderViewHolder.mProgressBar.setVisibility(View.GONE);
+            }
+            return;
+        } else {
+
+            locationViewHolder = (LocationViewHolder) holder;
+        }
+
+        locationViewHolder.title.setText(splashViewModels.get(position).getName());
+        locationViewHolder.address.setText(splashViewModels.get(position).getAddress());
+//        locationViewHolder.address.setText(splashViewModels.get(position).getAddress());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if (splashViewModels.isEmpty())
+            return 0;
+        return splashViewModels.size() + 1;
     }
 
     @Override
@@ -74,18 +97,18 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     }
 
     public class LocationViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView title;
-        private final TextView address;
-        private final ImageView locationImage;
+        View mView;
+        TextView title;
+        TextView address;
+        ImageView locationImage;
 
 
         public LocationViewHolder(View view) {
             super(view);
             mView = view;
-            title = (TextView) view.findViewById(R.id.tv_date);
-            address = (TextView) view.findViewById(R.id.tv_offer_title);
-            locationImage = (ImageView) view.findViewById(R.id.iv_company_logo);
+            title = (TextView) view.findViewById(R.id.title);
+            address = (TextView) view.findViewById(R.id.address);
+            locationImage = (ImageView) view.findViewById(R.id.image);
 
         }
 
@@ -93,5 +116,13 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         public String toString() {
             return super.toString();//+ " '" + mContentView.getText() + "'";
         }
+    }
+
+    public void showLoading(boolean status) {
+        showLoader = status;
+    }
+
+    public boolean isLoading() {
+        return showLoader;
     }
 }

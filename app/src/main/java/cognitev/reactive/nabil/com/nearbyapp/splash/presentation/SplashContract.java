@@ -1,5 +1,7 @@
 package cognitev.reactive.nabil.com.nearbyapp.splash.presentation;
 
+import java.util.List;
+
 import cognitev.reactive.nabil.com.nearbyapp.BasePresenter;
 import cognitev.reactive.nabil.com.nearbyapp.BaseView;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
@@ -22,7 +24,7 @@ public interface SplashContract {
         void showLoadingBar(boolean isShown);
 
         //results are here ==> send to UI
-        void displayData();
+        void displayData(List<SplashViewModel> splashViewModels);
 
         //no results found
         void EmptyData();

@@ -4,6 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import cognitev.reactive.nabil.com.nearbyapp.data.MainRepository;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
 import io.reactivex.Observable;
@@ -12,10 +15,12 @@ import io.reactivex.Observable;
  * Created by anabil on 10/20/2017.
  */
 
+@Singleton
 public class GetLocationsUseCase implements UseCase {
 
     private MainRepository mainRepository;
 
+    @Inject
     public GetLocationsUseCase(MainRepository mainRepository) {
         this.mainRepository = mainRepository;
     }

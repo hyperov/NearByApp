@@ -2,6 +2,9 @@ package cognitev.reactive.nabil.com.nearbyapp.splash.presentation;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.GroupsItem;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ItemsItem;
@@ -17,6 +20,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by anabil on 10/20/2017.
  */
 
+@Singleton
 public class SplashPresenter implements SplashContract.Presenter {
 
     private final CompositeDisposable mSubscriptions;
@@ -24,6 +28,7 @@ public class SplashPresenter implements SplashContract.Presenter {
 
     private SplashContract.View view;
 
+    @Inject
     public SplashPresenter(UseCase useCase, SplashContract.View view) {
         this.useCase = useCase;
         this.view = view;
@@ -98,9 +103,9 @@ public class SplashPresenter implements SplashContract.Presenter {
                         subscribe((splashViewModels, throwable) ->
                         {
                             if (throwable != null)
-                                view.displayData();
+                                view.displayError();
                             else
-                                view.displayData();
+                                view.displayData(splashViewModels);
 
                         }));
     }
