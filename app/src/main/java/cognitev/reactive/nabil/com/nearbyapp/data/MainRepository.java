@@ -5,7 +5,8 @@ import android.util.Log;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponsePhoto;
 import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.Local;
 import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.Remote;
 import io.reactivex.Observable;
@@ -30,7 +31,7 @@ public class MainRepository implements Repository {
     }
 
     @Override
-    public Observable<ApiResponse> getData(String location, int radius, String date) {
+    public Observable<ApiResponseLocation> getData(String location, int radius, String date) {
         return remoteRepository.getData(location, radius, date);
 
     }
@@ -40,7 +41,7 @@ public class MainRepository implements Repository {
         return localRepository.saveData(location, radius, date);
     }
 
-    public Observable<ApiResponse> getLocationsAndSaveToCashe(
+    public Observable<ApiResponseLocation> getLocationsAndSaveToCashe(
             String location,
             int radius,
             String date,
@@ -49,10 +50,16 @@ public class MainRepository implements Repository {
         if (connection)
             return getData(location, radius, date).
                     doOnNext(response -> saveData(location, radius, date)).
-                    doOnComplete(() -> Log.e(TAG, "getLocationsAndSaveToCashe completed: " )).
-                    doOnError(throwable -> Log.e(TAG, "getLocationsAndSaveToCashe: "+ throwable.getMessage() ));
+                    doOnComplete(() -> Log.e(TAG, "getLocationsAndSaveToCashe completed: ")).
+                    doOnError(throwable -> Log.e(TAG, "getLocationsAndSaveToCashe: " + throwable.getMessage()));
         else
             return localRepository.getData(location, radius, date);
+    }
+
+    @Override
+    public Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date) {
+
+        return remoteRepository.getLocationPhoto(locationId, limit, date);
     }
 
 

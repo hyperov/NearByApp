@@ -4,7 +4,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cognitev.reactive.nabil.com.nearbyapp.data.Repository;
-import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponsePhoto;
 import io.reactivex.Observable;
 
 /**
@@ -23,7 +24,7 @@ public class RemoteRepository implements Repository {
     }
 
     @Override
-    public Observable<ApiResponse> getData(String location, int radius, String date) {
+    public Observable<ApiResponseLocation> getData(String location, int radius, String date) {
         return retrofitClient.getLocations(location, radius, date);
     }
 
@@ -31,5 +32,10 @@ public class RemoteRepository implements Repository {
     public boolean saveData(String location, int radius, String date) {
         //not implemented
         return false;
+    }
+
+    Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date) {
+
+        return retrofitClient.getLocationPhoto(locationId, limit, date).take(1);
     }
 }

@@ -1,6 +1,7 @@
 package cognitev.reactive.nabil.com.nearbyapp.splash.usecase;
 
-import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponsePhoto;
 import io.reactivex.Observable;
 
 /**
@@ -9,5 +10,7 @@ import io.reactivex.Observable;
 
 public interface UseCase {
 
-    Observable<ApiResponse> getLocations(String location, int radius, boolean connection);
+    Observable<ApiResponseLocation> getLocations(String location, int radius, boolean connection);
+
+    Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date);
 }

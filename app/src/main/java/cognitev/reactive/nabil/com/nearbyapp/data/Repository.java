@@ -1,6 +1,7 @@
 package cognitev.reactive.nabil.com.nearbyapp.data;
 
-import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponsePhoto;
 import io.reactivex.Observable;
 
 /**
@@ -9,7 +10,9 @@ import io.reactivex.Observable;
 
 public interface Repository {
 
-    Observable<ApiResponse> getData(String location, int radius, String date);
+    Observable<ApiResponseLocation> getData(String location, int radius, String date);
 
     boolean saveData(String location, int radius, String date);
+
+    Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date);
 }

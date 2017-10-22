@@ -17,10 +17,10 @@ public class Constants {
     public static final String REQUESTING_LOCATION_UPDATES_KEY = "REQUESTING_LOCATION_UPDATES_KEY";
     public static final String LOCATION_KEY = "LOCATION_KEY";
 
+    public static final String IMAGE_SIZE = "100x100";
+
 
     public static final int REQUEST_CODE_GET_LOCATION_PERMISSION = 11;
-
-
 
 
 }

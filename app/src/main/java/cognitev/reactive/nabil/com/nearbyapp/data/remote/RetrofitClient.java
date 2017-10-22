@@ -7,7 +7,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponsePhoto;
 import io.reactivex.Observable;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -19,6 +20,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.R.attr.radius;
 import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CLIENT_ID_KEY;
 import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CLIENT_ID_VALUE;
 import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CLIENT_SECRET_KEY;
@@ -88,9 +90,14 @@ public class RetrofitClient {
 
     }
 
-    Observable<ApiResponse> getLocations(String location, int radius, String date) {
+    Observable<ApiResponseLocation> getLocations(String location, int radius, String date) {
 
         return retrofitApi.getLocations(location, radius, date);
+    }
+
+    Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date) {
+
+        return retrofitApi.getPhotos(locationId, limit, date);
     }
 
 

@@ -206,6 +206,17 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
     }
 
+    @Override
+    public void updateData(List<SplashViewModel> splashViewModels) {
+        locationRecyclerView.setVisibility(View.VISIBLE);
+        layoutError.setVisibility(View.GONE);
+
+        locationAdapter.notifyDataSetChanged();
+//        locationAdapter = new LocationAdapter(splashViewModels, this);
+//        locationRecyclerView.setAdapter(locationAdapter);
+
+    }
+
     protected void showProgress() {
         progressDialog.show();
     }

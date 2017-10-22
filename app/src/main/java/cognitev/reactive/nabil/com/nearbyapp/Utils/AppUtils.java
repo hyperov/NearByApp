@@ -4,6 +4,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by anabil on 10/21/2017.
@@ -23,6 +26,11 @@ public class AppUtils {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
+    public static String getCurrentDate() {
+        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyyMMdd", Locale.US);
+        return formattedDate.format(Calendar.getInstance().getTime());
     }
 
 

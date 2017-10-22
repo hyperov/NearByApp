@@ -9,11 +9,22 @@ public class SplashViewModel {
     private String name;
     private String id;
     private String address;
+    private String imageUrl;
+
+
 
     public SplashViewModel(String name, String id, String address) {
         this.name = name;
         this.id = id;
         this.address = address;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public SplashViewModel() {
