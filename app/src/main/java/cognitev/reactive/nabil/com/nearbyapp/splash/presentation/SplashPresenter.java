@@ -127,18 +127,21 @@ public class SplashPresenter implements SplashContract.Presenter {
 
                 }
         );
-        splashViewModelObservable.subscribeOn(Schedulers.io()).
-                toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((splashViewModels, throwable) -> {
-                    view.showLoadingBar(false);
-                    if (throwable != null)
-                        view.displayError();
-                    else
-                        view.displayData(splashViewModels);
+        mSubscriptions.add(
+                splashViewModelObservable.
+                        toList().
+                        subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe((splashViewModels, throwable) -> {
+                            view.showLoadingBar(false);
+                            if (throwable != null)
+                                view.displayError();
+                            else
+                                view.displayData(splashViewModels);
 
-                });
-        mSubscriptions.add(splashViewModelObservable
+                        }));
+        mSubscriptions.add(
+                splashViewModelObservable
                 .flatMap(splashViewModel ->
                 {
                     String id = splashViewModel.getId();

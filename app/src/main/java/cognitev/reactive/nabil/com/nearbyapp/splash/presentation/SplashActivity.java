@@ -92,11 +92,13 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         super.onResume();
         presenter.takeView(this);
 
+        mRequestingLocationUpdates = true;
+
 //        if (mGoogleApiClient.isConnected() && !mRequestingLocationUpdates) {
         if (!AppUtils.isNetworkConnected(this))
             displayError();
-        else if (mGoogleApiClient.isConnected()) {
-            startLocationUpdates();
+        else if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
+            checkLocationPermissions();
         }
     }
 
@@ -131,8 +133,10 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     protected void onPause() {
         super.onPause();
         stopLocationUpdates();
+
         presenter.unsubscribe();
         presenter.dropView();
+
 
     }
 
@@ -191,16 +195,22 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         errorImage.setImageResource(android.R.drawable.stat_notify_error);
         errorText.setText(R.string.no_data_found);
 
+        AppUtils.deleteLocationPreferences(this);
+
 //        Toast.makeText(this, "No data", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void displayError() {
+        hideProgress();
         layoutError.setVisibility(View.VISIBLE);
         locationRecyclerView.setVisibility(View.GONE);
 
         errorText.setText(getString(R.string.something_went_wrong));
         errorImage.setImageResource(android.R.drawable.ic_delete);
+
+        AppUtils.deleteLocationPreferences(this);
+
 //        Toast.makeText(this, "something went wrong", Toast.LENGTH_SHORT).show();
 
     }
@@ -212,7 +222,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
         splashViewModelsList.clear();
         splashViewModelsList.addAll(splashViewModels);
-        locationAdapter.notifyItemRangeChanged(0,splashViewModels.size());
+        locationAdapter.notifyItemRangeChanged(0, splashViewModels.size());
 //        locationAdapter = new LocationAdapter(splashViewModels, this);
 //        locationRecyclerView.setAdapter(locationAdapter);
 
@@ -239,8 +249,8 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(5000);
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(5000 * 60);
+//        mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -304,13 +314,38 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     public void onLocationChanged(Location location) {
         Log.e(TAG, "onLocationChanged, getLatitude: " + location.getLatitude());
 
-        mRequestingLocationUpdates = true;
-        String newLocation = String.valueOf(location.getLatitude()).concat(",").concat(String.valueOf(location.getLongitude()));
+        String newLocationText = String.valueOf(location.getLatitude()).concat(",").concat(String.valueOf(location.getLongitude()));
 
-        if (AppUtils.isNetworkConnected(this))
-            presenter.getLocations(newLocation, 1000, AppUtils.isNetworkConnected(this));
-        else
+        if (AppUtils.isNetworkConnected(this)) {
+            Location oldLocation = AppUtils.getLocationFromPref(this);
+            boolean first = oldLocation != null;
+
+            if (mRequestingLocationUpdates) {
+                presenter.getLocations(newLocationText, 1000, AppUtils.isNetworkConnected(this));
+                mRequestingLocationUpdates = false;
+            } else if (first) {
+                float v = oldLocation.distanceTo(location);
+                if (v > 500) {
+                    //distance greater than 500 meter
+                    presenter.getLocations(newLocationText, 1000, AppUtils.isNetworkConnected(this));
+                    AppUtils.saveLocationPreferences(this, location);
+                }
+
+            } else {
+                //first update
+                presenter.getLocations(newLocationText, 1000, AppUtils.isNetworkConnected(this));
+                AppUtils.saveLocationPreferences(this, location);
+            }
+
+        } else
             displayError();
+
+    }
+
+    private void updateLocation(Location location) {
+        String newLocationText = String.valueOf(location.getLatitude()).concat(",").concat(String.valueOf(location.getLongitude()));
+
+        presenter.getLocations(newLocationText, 1000, AppUtils.isNetworkConnected(this));
 
     }
 
@@ -318,7 +353,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.e(TAG, "Connection failed:" + connectionResult.getErrorCode());
         String errorMessage = connectionResult.getErrorMessage();
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT);
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 
 

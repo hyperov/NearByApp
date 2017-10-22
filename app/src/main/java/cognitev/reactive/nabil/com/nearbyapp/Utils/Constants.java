@@ -16,6 +16,7 @@ public class Constants {
     public static final String CONTENT_TYPE_VALUE = "application/json";
     public static final String REQUESTING_LOCATION_UPDATES_KEY = "REQUESTING_LOCATION_UPDATES_KEY";
     public static final String LOCATION_KEY = "LOCATION_KEY";
+    public static final String LOCATION_SHARED_KEY = "LOCATION_SHARED_KEY";
 
     public static final String IMAGE_SIZE = "100x100";
 
