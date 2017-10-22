@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 
 import cognitev.reactive.nabil.com.nearbyapp.data.Repository;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.Warning;
 import io.reactivex.Observable;
 
 /**
@@ -21,7 +22,9 @@ public class LocalRepository implements Repository {
     @Override
     public Observable<ApiResponse> getData(String location, int radius, String date) {
         //not implemented yet
-        return null;
+        ApiResponse apiResponse =new ApiResponse();
+        apiResponse.getResponse().setWarning(new Warning());
+        return Observable.just(apiResponse);
     }
 
     //let the input be object

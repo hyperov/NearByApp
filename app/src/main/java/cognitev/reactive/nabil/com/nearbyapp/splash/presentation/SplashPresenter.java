@@ -71,6 +71,11 @@ public class SplashPresenter implements SplashContract.Presenter {
         view.showLoadingBar(true);
 
         Observable<ApiResponse> locations = useCase.getLocations(location, radius, connection);
+        if (location == null) {
+            view.showLoadingBar(false);
+            view.displayError();
+            return null;
+        }
         mSubscriptions.add(locations.subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribe(apiResponse ->
@@ -93,7 +98,10 @@ public class SplashPresenter implements SplashContract.Presenter {
 //                                groupsItem.getItems().
 
                             }
-                        }, throwable -> view.displayError(), () -> view.showLoadingBar(false)
+                        }, throwable -> {
+                            view.showLoadingBar(false);
+                            view.displayError();
+                        }, () -> view.showLoadingBar(false)
                 ));
 
 //        locations
@@ -103,16 +111,16 @@ public class SplashPresenter implements SplashContract.Presenter {
     private void displayLocationsViewData(List<ItemsItem> items) {
         mSubscriptions.add(
                 Observable.fromIterable(items).flatMap(itemsItem ->
-                {
-                    String name = itemsItem.getVenue().getName();
-                    String id = itemsItem.getVenue().getId();
-                    String address = itemsItem.getVenue().getLocation().getAddress();
-                    SplashViewModel splashViewModel = new SplashViewModel(name, id, address);
-                    return Observable.just(splashViewModel);
+                        {
+                            String name = itemsItem.getVenue().getName();
+                            String id = itemsItem.getVenue().getId();
+                            String address = itemsItem.getVenue().getLocation().getAddress();
+                            SplashViewModel splashViewModel = new SplashViewModel(name, id, address);
+                            return Observable.just(splashViewModel);
 
-                }
-        ).toList()
-                .subscribeOn(Schedulers.io()).
+                        }
+                ).toList()
+                        .subscribeOn(Schedulers.io()).
                         observeOn(AndroidSchedulers.mainThread()).
                         subscribe((splashViewModels, throwable) ->
                         {

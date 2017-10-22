@@ -1,5 +1,7 @@
 package cognitev.reactive.nabil.com.nearbyapp.data;
 
+import android.util.Log;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -7,6 +9,8 @@ import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponse;
 import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.Local;
 import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.Remote;
 import io.reactivex.Observable;
+
+import static com.google.android.gms.internal.zzt.TAG;
 
 /**
  * Created by anabil on 10/21/2017.
@@ -44,7 +48,9 @@ public class MainRepository implements Repository {
 
         if (connection)
             return getData(location, radius, date).
-                    doOnNext(response -> saveData(location, radius, date));
+                    doOnNext(response -> saveData(location, radius, date)).
+                    doOnComplete(() -> Log.e(TAG, "getLocationsAndSaveToCashe completed: " )).
+                    doOnError(throwable -> Log.e(TAG, "getLocationsAndSaveToCashe: "+ throwable.getMessage() ));
         else
             return localRepository.getData(location, radius, date);
     }

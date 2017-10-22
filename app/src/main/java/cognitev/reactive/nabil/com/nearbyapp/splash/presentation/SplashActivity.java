@@ -11,6 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -48,6 +51,10 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
     private static Location myLocation;
     private boolean mRequestingLocationUpdates;
+
+    View layoutError;
+    private ImageView errorImage;
+    private TextView errorText;
 
 
     public SplashActivity() {
@@ -91,7 +98,9 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         presenter.takeView(this);
 
 //        if (mGoogleApiClient.isConnected() && !mRequestingLocationUpdates) {
-        if (mGoogleApiClient.isConnected() ) {
+        if (!AppUtils.isNetworkConnected(this))
+            displayError();
+        else if (mGoogleApiClient.isConnected()) {
             startLocationUpdates();
         }
     }
@@ -134,10 +143,19 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
     private void initViews() {
         locationRecyclerView = (RecyclerView) findViewById(R.id.locationsList);
+        initErrorLayout();
+
         locationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         locationAdapter = new LocationAdapter(new ArrayList<SplashViewModel>(), this);
 
         locationRecyclerView.setAdapter(locationAdapter);
+    }
+
+    private void initErrorLayout() {
+        layoutError = findViewById(R.id.layout_error);
+        layoutError.setVisibility(View.GONE);
+        errorImage = (ImageView) layoutError.findViewById(R.id.image_error);
+        errorText = (TextView) layoutError.findViewById(R.id.text_error);
     }
 
 
@@ -156,19 +174,35 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
     @Override
     public void displayData(List<SplashViewModel> splashViewModels) {
+
+        locationRecyclerView.setVisibility(View.VISIBLE);
+        layoutError.setVisibility(View.GONE);
+
         locationAdapter = new LocationAdapter(splashViewModels, this);
         locationRecyclerView.setAdapter(locationAdapter);
+
 
     }
 
     @Override
     public void EmptyData() {
-        Toast.makeText(this, "No data", Toast.LENGTH_SHORT).show();
+        layoutError.setVisibility(View.VISIBLE);
+        locationRecyclerView.setVisibility(View.GONE);
+
+        errorImage.setImageResource(android.R.drawable.stat_notify_error);
+        errorText.setText(R.string.no_data_found);
+
+//        Toast.makeText(this, "No data", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void displayError() {
-        Toast.makeText(this, "something went wrong", Toast.LENGTH_SHORT).show();
+        layoutError.setVisibility(View.VISIBLE);
+        locationRecyclerView.setVisibility(View.GONE);
+
+        errorText.setText(getString(R.string.something_went_wrong));
+        errorImage.setImageResource(android.R.drawable.ic_delete);
+//        Toast.makeText(this, "something went wrong", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -232,7 +266,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     public void onConnected(Bundle bundle) {
         Log.e(TAG, "onConnected");
 //        if (mRequestingLocationUpdates)
-            checkLocationPermissions();
+        checkLocationPermissions();
     }
 
     private void checkLocationPermissions() {
@@ -257,9 +291,14 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     @Override
     public void onLocationChanged(Location location) {
         Log.e(TAG, "onLocationChanged, getLatitude: " + location.getLatitude());
-        mRequestingLocationUpdates=true;
-        String newLocation=String.valueOf(location.getLatitude()).concat(",").concat(String.valueOf(location.getLongitude()));
-        presenter.getLocations(newLocation, 1000, AppUtils.isNetworkConnected(this));
+
+        mRequestingLocationUpdates = true;
+        String newLocation = String.valueOf(location.getLatitude()).concat(",").concat(String.valueOf(location.getLongitude()));
+
+        if (AppUtils.isNetworkConnected(this))
+            presenter.getLocations(newLocation, 1000, AppUtils.isNetworkConnected(this));
+        else
+            displayError();
 
     }
 
