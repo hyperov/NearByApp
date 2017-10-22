@@ -32,8 +32,8 @@ public class GetLocationsUseCase implements UseCase {
     }
 
     @Override
-    public Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date) {
+    public Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit) {
 
-        return mainRepository.getLocationPhoto(locationId, limit, date);
+        return mainRepository.getLocationPhoto(locationId, limit, AppUtils.getCurrentDate());
     }
 }

@@ -12,5 +12,5 @@ public interface UseCase {
 
     Observable<ApiResponseLocation> getLocations(String location, int radius, boolean connection);
 
-    Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date);
+    Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit);
 }

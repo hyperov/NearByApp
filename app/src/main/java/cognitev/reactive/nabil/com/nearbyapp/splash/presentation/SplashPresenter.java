@@ -8,7 +8,6 @@ import javax.inject.Singleton;
 
 import cognitev.reactive.nabil.com.nearbyapp.Utils.Constants;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
-import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponsePhoto;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.location.GroupsItem;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.location.ItemsItem;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.location.Response;
@@ -18,8 +17,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Created by anabil on 10/20/2017.
@@ -141,9 +138,9 @@ public class SplashPresenter implements SplashContract.Presenter {
 
 
     @Override
-    public Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date) {
+    public void getLocationPhoto(String locationId, int limit) {
 
-        imageObservable = useCase.getLocationPhoto(locationId, limit, date)
+        imageObservable = useCase.getLocationPhoto(locationId, limit)
                 .flatMap(apiResponsePhoto -> {
                     String prefix = apiResponsePhoto.getResponse().getPhotos().getItems().get(0).getPrefix();
                     String suffix = apiResponsePhoto.getResponse().getPhotos().getItems().get(0).getSuffix();

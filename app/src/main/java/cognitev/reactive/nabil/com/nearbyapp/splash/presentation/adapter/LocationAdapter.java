@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import cognitev.reactive.nabil.com.nearbyapp.R;
@@ -66,6 +68,10 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         locationViewHolder.title.setText(splashViewModels.get(position).getName());
         locationViewHolder.address.setText(splashViewModels.get(position).getAddress());
+
+        String imageUrl = splashViewModels.get(position).getImageUrl();
+        if (imageUrl != null && !imageUrl.isEmpty())
+            Picasso.with(context).load(imageUrl).into(((LocationViewHolder) holder).locationImage);
 //        locationViewHolder.address.setText(splashViewModels.get(position).getAddress());
     }
 

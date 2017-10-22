@@ -5,7 +5,6 @@ import java.util.List;
 import cognitev.reactive.nabil.com.nearbyapp.BasePresenter;
 import cognitev.reactive.nabil.com.nearbyapp.BaseView;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
-import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponsePhoto;
 import io.reactivex.Observable;
 
 /**
@@ -18,7 +17,7 @@ public interface SplashContract {
 
         Observable<ApiResponseLocation> getLocations(String location, int radius, boolean connection);
 
-        Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date);
+        void getLocationPhoto(String locationId, int limit);
     }
 
     interface View extends BaseView<Presenter> {

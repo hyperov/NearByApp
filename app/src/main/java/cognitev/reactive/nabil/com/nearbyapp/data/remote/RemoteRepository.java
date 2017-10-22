@@ -34,7 +34,8 @@ public class RemoteRepository implements Repository {
         return false;
     }
 
-    Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date) {
+    @Override
+    public Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date) {
 
         return retrofitClient.getLocationPhoto(locationId, limit, date).take(1);
     }
