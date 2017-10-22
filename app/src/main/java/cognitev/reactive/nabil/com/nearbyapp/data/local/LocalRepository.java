@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 
 import cognitev.reactive.nabil.com.nearbyapp.data.Repository;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponsePhoto;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.location.Warning;
 import io.reactivex.Observable;
 
@@ -34,5 +35,11 @@ public class LocalRepository implements Repository {
         //insert to local database
 
         return false;
+    }
+
+    @Override
+    public Observable<ApiResponsePhoto> getLocationPhoto(String locationId, int limit, String date) {
+        //not implemented
+        return null;
     }
 }

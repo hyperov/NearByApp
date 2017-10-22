@@ -13,7 +13,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/image"
+            android:id="@+id/image_list"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginLeft="8dp"
@@ -36,8 +36,8 @@
                 android:layout_marginTop="16dp"
                 android:text="TextView"
                 android:textSize="30sp"
-                app:layout_constraintLeft_toRightOf="@+id/image"
-                app:layout_constraintTop_toTopOf="@+id/image" />
+                app:layout_constraintLeft_toRightOf="@+id/image_list"
+                app:layout_constraintTop_toTopOf="@+id/image_list" />
 
             <TextView
                 android:id="@+id/address"

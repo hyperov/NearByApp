@@ -1,5 +1,7 @@
 package cognitev.reactive.nabil.com.nearbyapp.splash.presentation;
 
+import android.util.Log;
+
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -17,6 +19,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.google.android.gms.internal.zzt.TAG;
 
 /**
  * Created by anabil on 10/20/2017.
@@ -79,11 +83,12 @@ public class SplashPresenter implements SplashContract.Presenter {
             view.displayError();
             return null;
         }
-        mSubscriptions.add(locations.subscribeOn(Schedulers.io()).
+        mSubscriptions.add(locations.
+                subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
-                subscribe(apiResponse ->
+                subscribe(apiResponseLocation ->
                         {
-                            Response response = apiResponse.getResponse();
+                            Response response = apiResponseLocation.getResponse();
                             Warning warning = response.getWarning();
 
                             if (response.getTotalResults() == 0)
@@ -123,6 +128,20 @@ public class SplashPresenter implements SplashContract.Presenter {
                 }
         );
         mSubscriptions.add(splashViewModelObservable
+                .flatMap(splashViewModel ->
+                {
+                    String id = splashViewModel.getId();
+                    Observable<ImageViewModel> imageObservable = getImageObservable(id, 1);
+                    ImageViewModel imageViewModel = imageObservable.
+                            doOnError(throwable -> Log.e(TAG, "displayLocationsViewData: get image", throwable))
+                            .blockingFirst();
+
+                    String url = imageViewModel.getPrefix()
+                            .concat(Constants.IMAGE_SIZE)
+                            .concat(imageViewModel.getSuffix());
+                    splashViewModel.setImageUrl(url);
+                    return Observable.just(splashViewModel);
+                })
                 .toList()
                 .subscribeOn(Schedulers.io()).
                         observeOn(AndroidSchedulers.mainThread()).
@@ -136,32 +155,49 @@ public class SplashPresenter implements SplashContract.Presenter {
                         }));
     }
 
-
     @Override
-    public void getLocationPhoto(String locationId, int limit) {
-
+    public Observable<ImageViewModel> getImageObservable(String locationId, int limit) {
         imageObservable = useCase.getLocationPhoto(locationId, limit)
                 .flatMap(apiResponsePhoto -> {
-                    String prefix = apiResponsePhoto.getResponse().getPhotos().getItems().get(0).getPrefix();
-                    String suffix = apiResponsePhoto.getResponse().getPhotos().getItems().get(0).getSuffix();
+                    List<cognitev.reactive.nabil.com.nearbyapp.data.model.photo.ItemsItem> items = apiResponsePhoto.getResponse().getPhotos().getItems();
+                    String prefix = "", suffix = "";
+                    if (!items.isEmpty()) {
+                        prefix = items.get(0).getPrefix();
+                        suffix = items.get(0).getSuffix();
+                    }
 
                     ImageViewModel imageViewModel = new ImageViewModel(prefix, suffix);
                     return Observable.just(imageViewModel);
                 });
-
-        mSubscriptions.add(Observable.zip(imageObservable, splashViewModelObservable, (imageViewModel, splashViewModel) ->
-        {
-            String url = imageViewModel.getPrefix().concat(Constants.IMAGE_SIZE).concat(imageViewModel.getSuffix());
-            splashViewModel.setImageUrl(url);
-            return splashViewModel;
-
-        }).retry(3).toList().
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread()).
-                subscribe((splashViewModels, throwable) ->
-                {
-                    if (throwable == null)
-                        view.updateData(splashViewModels);
-                }));
+        return imageObservable;
     }
+
+
+//    @Override
+//    public void getLocationPhoto(String locationId, int limit) {
+//
+//        imageObservable = useCase.getLocationPhoto(locationId, limit)
+//                .flatMap(apiResponsePhoto -> {
+//                    String prefix = apiResponsePhoto.getResponse().getPhotos().getItems().get(0).getPrefix();
+//                    String suffix = apiResponsePhoto.getResponse().getPhotos().getItems().get(0).getSuffix();
+//
+//                    ImageViewModel imageViewModel = new ImageViewModel(prefix, suffix);
+//                    return Observable.just(imageViewModel);
+//                });
+//
+//        mSubscriptions.add(Observable.zip(imageObservable, splashViewModelObservable, (imageViewModel, splashViewModel) ->
+//        {
+//            String url = imageViewModel.getPrefix().concat(Constants.IMAGE_SIZE).concat(imageViewModel.getSuffix());
+//            splashViewModel.setImageUrl(url);
+//            return splashViewModel;
+//
+//        }).retry(3).toList().
+//                subscribeOn(Schedulers.io()).
+//                observeOn(AndroidSchedulers.mainThread()).
+//                subscribe((splashViewModels, throwable) ->
+//                {
+//                    if (throwable == null)
+//                        view.updateData(splashViewModels);
+//                }));
+//    }
 }

@@ -114,7 +114,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mView = view;
             title = (TextView) view.findViewById(R.id.title);
             address = (TextView) view.findViewById(R.id.address);
-            locationImage = (ImageView) view.findViewById(R.id.image);
+            locationImage = (ImageView) view.findViewById(R.id.image_list);
 
         }
 

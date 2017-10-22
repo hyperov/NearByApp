@@ -17,7 +17,7 @@ public interface SplashContract {
 
         Observable<ApiResponseLocation> getLocations(String location, int radius, boolean connection);
 
-        void getLocationPhoto(String locationId, int limit);
+        Observable<ImageViewModel> getImageObservable(String locationId, int limit);
     }
 
     interface View extends BaseView<Presenter> {
