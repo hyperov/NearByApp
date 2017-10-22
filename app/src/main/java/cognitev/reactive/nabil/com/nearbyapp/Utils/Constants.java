@@ -10,13 +10,19 @@ public class Constants {
     public static final String CLIENT_ID_VALUE = "ZDWGQCLTNBRITF0WBYEXTR5U00JHR5CGUK5VSSEKM22SLEB5";
 
     public static final String CLIENT_SECRET_KEY = "client_secret";
-    public static final String CLIENT_SECRET_VALUE = "0AYPFYB0KHRURVAI2EXKLHPMDCE2CI11ZVKQYZUWZBH3YJID";
+    public static final String CLIENT_SECRET_VALUE = "SON5QHCU1VWDY4M3RKF4EODGHDYVIEEMTSG4WD44UEL5XIO4";
 
     public static final String CONTENT_TYPE_KEY = "Content-Type";
     public static final String CONTENT_TYPE_VALUE = "application/json";
     public static final String REQUESTING_LOCATION_UPDATES_KEY = "REQUESTING_LOCATION_UPDATES_KEY";
     public static final String LOCATION_KEY = "LOCATION_KEY";
+
     public static final String LOCATION_SHARED_KEY = "LOCATION_SHARED_KEY";
+
+    public static final String SETTING_SHARED_KEY = "SETTING_SHARED_KEY";
+
+    public static final int SETTING_SHARED_VALUE_REALTIME = 11;
+    public static final int SETTING_SHARED_VALUE_SINGLE_UPDATE = 22;
 
     public static final String IMAGE_SIZE = "100x100";
 

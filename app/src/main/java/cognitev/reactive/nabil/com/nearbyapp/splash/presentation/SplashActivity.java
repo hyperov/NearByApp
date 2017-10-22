@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +36,8 @@ import cognitev.reactive.nabil.com.nearbyapp.splash.presentation.adapter.Locatio
 import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.LOCATION_KEY;
 import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.REQUESTING_LOCATION_UPDATES_KEY;
 import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.REQUEST_CODE_GET_LOCATION_PERMISSION;
+import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.SETTING_SHARED_VALUE_REALTIME;
+import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.SETTING_SHARED_VALUE_SINGLE_UPDATE;
 
 public class SplashActivity extends BaseActivity implements SplashContract.View, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -74,6 +77,9 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        if (AppUtils.getSettingFromPref(this) == 0)
+            AppUtils.saveSettingPreferences(this, SETTING_SHARED_VALUE_REALTIME);
+
         updateValuesFromBundle(savedInstanceState);
         setUpProgress();
 
@@ -82,9 +88,24 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         createLocationRequest();
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_real_time) {
+            AppUtils.saveSettingPreferences(this, SETTING_SHARED_VALUE_REALTIME);
+        } else if (id == R.id.action_single_update) {
+            AppUtils.saveSettingPreferences(this, SETTING_SHARED_VALUE_SINGLE_UPDATE);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -322,8 +343,9 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
             if (mRequestingLocationUpdates) {
                 presenter.getLocations(newLocationText, 1000, AppUtils.isNetworkConnected(this));
+                AppUtils.saveLocationPreferences(this, location);
                 mRequestingLocationUpdates = false;
-            } else if (first) {
+            } else if (first && AppUtils.getSettingFromPref(this) == SETTING_SHARED_VALUE_REALTIME) {
                 float v = oldLocation.distanceTo(location);
                 if (v > 500) {
                     //distance greater than 500 meter

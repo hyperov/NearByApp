@@ -7,6 +7,8 @@
     <string name="please_wait">please wait</string>
     <string name="something_went_wrong">Something went wrong !!</string>
     <string name="no_data_found">No data found !!</string>
+    <string name="real_time">Real time</string>
+    <string name="single_update">Single update</string>
 
 
 </resources>

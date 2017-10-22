@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.LOCATION_SHARED_KEY;
+import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.SETTING_SHARED_KEY;
 
 /**
  * Created by anabil on 10/21/2017.
@@ -40,6 +41,21 @@ public class AppUtils {
         return formattedDate.format(Calendar.getInstance().getTime());
     }
 
+    public static void saveSettingPreferences(Context context, int value) {
+        SharedPreferences mSharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+
+        editor.putInt(SETTING_SHARED_KEY, value);
+        editor.apply();
+    }
+
+    public static int getSettingFromPref(Context context) {
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        return defaultSharedPreferences.getInt(SETTING_SHARED_KEY, 0);
+    }
+
     public static void saveLocationPreferences(Context context, Location value) {
         SharedPreferences mSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -55,7 +71,7 @@ public class AppUtils {
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         Gson gson = new Gson();
-        String json = defaultSharedPreferences.getString(LOCATION_SHARED_KEY, null);
+        String json = defaultSharedPreferences.getString(LOCATION_SHARED_KEY, "");
         return gson.fromJson(json, Location.class);
     }
 

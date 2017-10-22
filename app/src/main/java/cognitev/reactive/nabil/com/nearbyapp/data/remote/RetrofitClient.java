@@ -20,7 +20,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static android.R.attr.radius;
 import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CLIENT_ID_KEY;
 import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CLIENT_ID_VALUE;
 import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.CLIENT_SECRET_KEY;
@@ -46,7 +45,7 @@ public class RetrofitClient {
     private void initReq() {
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
 
         OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
 
