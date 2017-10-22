@@ -55,17 +55,12 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     View layoutError;
     private ImageView errorImage;
     private TextView errorText;
+    private List<SplashViewModel> splashViewModelsList;
 
 
     public SplashActivity() {
     }
 
-    //    @Inject
-//    @Override
-//    public SplashContract.Presenter getPresenter() {
-////        presenter = super.getPresenter();
-//        return presenter;
-//    }
 
     private void setUpProgress() {
 
@@ -145,10 +140,13 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         locationRecyclerView = (RecyclerView) findViewById(R.id.locationsList);
         initErrorLayout();
 
+        splashViewModelsList = new ArrayList<>();
+
         locationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        locationAdapter = new LocationAdapter(new ArrayList<SplashViewModel>(), this);
+        locationAdapter = new LocationAdapter(splashViewModelsList, this);
 
         locationRecyclerView.setAdapter(locationAdapter);
+
     }
 
     private void initErrorLayout() {
@@ -178,7 +176,8 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         locationRecyclerView.setVisibility(View.VISIBLE);
         layoutError.setVisibility(View.GONE);
 
-        locationAdapter = new LocationAdapter(splashViewModels, this);
+        splashViewModelsList = splashViewModels;
+        locationAdapter = new LocationAdapter(splashViewModelsList, this);
         locationRecyclerView.setAdapter(locationAdapter);
 
 
@@ -211,7 +210,9 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         locationRecyclerView.setVisibility(View.VISIBLE);
         layoutError.setVisibility(View.GONE);
 
-        locationAdapter.notifyDataSetChanged();
+        splashViewModelsList.clear();
+        splashViewModelsList.addAll(splashViewModels);
+        locationAdapter.notifyItemRangeChanged(0,splashViewModels.size());
 //        locationAdapter = new LocationAdapter(splashViewModels, this);
 //        locationRecyclerView.setAdapter(locationAdapter);
 

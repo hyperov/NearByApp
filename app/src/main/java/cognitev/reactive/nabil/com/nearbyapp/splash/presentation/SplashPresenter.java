@@ -109,7 +109,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                         }, throwable -> {
                             view.showLoadingBar(false);
                             view.displayError();
-                        }, () -> view.showLoadingBar(false)
+                        }
                 ));
 
 //        locations
@@ -127,6 +127,17 @@ public class SplashPresenter implements SplashContract.Presenter {
 
                 }
         );
+        splashViewModelObservable.subscribeOn(Schedulers.io()).
+                toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((splashViewModels, throwable) -> {
+                    view.showLoadingBar(false);
+                    if (throwable != null)
+                        view.displayError();
+                    else
+                        view.displayData(splashViewModels);
+
+                });
         mSubscriptions.add(splashViewModelObservable
                 .flatMap(splashViewModel ->
                 {
@@ -150,7 +161,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                             if (throwable != null)
                                 view.displayError();
                             else
-                                view.displayData(splashViewModels);
+                                view.updateData(splashViewModels);
 
                         }));
     }

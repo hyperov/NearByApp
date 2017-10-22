@@ -70,6 +70,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         locationViewHolder.address.setText(splashViewModels.get(position).getAddress());
 
         String imageUrl = splashViewModels.get(position).getImageUrl();
+
         if (imageUrl != null && !imageUrl.isEmpty())
             Picasso.with(context).load(imageUrl).into(((LocationViewHolder) holder).locationImage);
 //        locationViewHolder.address.setText(splashViewModels.get(position).getAddress());
