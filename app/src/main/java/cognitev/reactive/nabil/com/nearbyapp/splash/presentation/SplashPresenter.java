@@ -142,22 +142,22 @@ public class SplashPresenter implements SplashContract.Presenter {
                         }));
         mSubscriptions.add(
                 splashViewModelObservable
-                .flatMap(splashViewModel ->
-                {
-                    String id = splashViewModel.getId();
-                    Observable<ImageViewModel> imageObservable = getImageObservable(id, 1);
-                    ImageViewModel imageViewModel = imageObservable.
-                            doOnError(throwable -> Log.e(TAG, "displayLocationsViewData: get image", throwable))
-                            .blockingFirst();
+                        .flatMap(splashViewModel ->
+                        {
+                            String id = splashViewModel.getId();
+                            Observable<ImageViewModel> imageObservable = getImageObservable(id, 1);
+                            ImageViewModel imageViewModel = imageObservable.
+                                    doOnError(throwable -> Log.e(TAG, "displayLocationsViewData: get image", throwable))
+                                    .blockingFirst();
 
-                    String url = imageViewModel.getPrefix()
-                            .concat(Constants.IMAGE_SIZE)
-                            .concat(imageViewModel.getSuffix());
-                    splashViewModel.setImageUrl(url);
-                    return Observable.just(splashViewModel);
-                })
-                .toList()
-                .subscribeOn(Schedulers.io()).
+                            String url = imageViewModel.getPrefix()
+                                    .concat(Constants.IMAGE_SIZE)
+                                    .concat(imageViewModel.getSuffix());
+                            splashViewModel.setImageUrl(url);
+                            return Observable.just(splashViewModel);
+                        })
+                        .toList()
+                        .subscribeOn(Schedulers.io()).
                         observeOn(AndroidSchedulers.mainThread()).
                         subscribe((splashViewModels, throwable) ->
                         {
@@ -187,31 +187,4 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
 
-//    @Override
-//    public void getLocationPhoto(String locationId, int limit) {
-//
-//        imageObservable = useCase.getLocationPhoto(locationId, limit)
-//                .flatMap(apiResponsePhoto -> {
-//                    String prefix = apiResponsePhoto.getResponse().getPhotos().getItems().get(0).getPrefix();
-//                    String suffix = apiResponsePhoto.getResponse().getPhotos().getItems().get(0).getSuffix();
-//
-//                    ImageViewModel imageViewModel = new ImageViewModel(prefix, suffix);
-//                    return Observable.just(imageViewModel);
-//                });
-//
-//        mSubscriptions.add(Observable.zip(imageObservable, splashViewModelObservable, (imageViewModel, splashViewModel) ->
-//        {
-//            String url = imageViewModel.getPrefix().concat(Constants.IMAGE_SIZE).concat(imageViewModel.getSuffix());
-//            splashViewModel.setImageUrl(url);
-//            return splashViewModel;
-//
-//        }).retry(3).toList().
-//                subscribeOn(Schedulers.io()).
-//                observeOn(AndroidSchedulers.mainThread()).
-//                subscribe((splashViewModels, throwable) ->
-//                {
-//                    if (throwable == null)
-//                        view.updateData(splashViewModels);
-//                }));
-//    }
 }

@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponsePhoto;
+import cognitev.reactive.nabil.com.nearbyapp.data.model.location.Venue;
 import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.Local;
 import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.Remote;
 import io.reactivex.Observable;
@@ -37,8 +38,8 @@ public class MainRepository implements Repository {
     }
 
     @Override
-    public boolean saveData(String location, int radius, String date) {
-        return localRepository.saveData(location, radius, date);
+    public boolean saveData(Venue venue) {
+        return localRepository.saveData(venue);
     }
 
     public Observable<ApiResponseLocation> getLocationsAndSaveToCashe(
@@ -49,7 +50,12 @@ public class MainRepository implements Repository {
 
         if (connection)
             return getData(location, radius, date).
-                    doOnNext(response -> saveData(location, radius, date)).
+                    doOnNext(response -> {
+                        Venue venue = response.getResponse()
+                                .getGroups().get(0).getItems().get(0).getVenue();
+
+                        saveData(venue);
+                    }).
                     doOnComplete(() -> Log.e(TAG, "getLocationsAndSaveToCashe completed: ")).
                     doOnError(throwable -> Log.e(TAG, "getLocationsAndSaveToCashe: " + throwable.getMessage()));
         else

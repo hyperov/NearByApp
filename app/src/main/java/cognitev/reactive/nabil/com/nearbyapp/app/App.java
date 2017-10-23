@@ -3,6 +3,8 @@ package cognitev.reactive.nabil.com.nearbyapp.app;
 import android.app.Activity;
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
+
 import javax.inject.Inject;
 
 import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.components.AppComponent;
@@ -14,6 +16,7 @@ import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.modules.Present
 import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.modules.UseCaseModule;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
+import io.realm.Realm;
 
 /**
  * Created by anabil on 10/21/2017.
@@ -60,6 +63,15 @@ public class App extends Application implements HasActivityInjector {
                 .build().inject(this);
 
 //        appComponent.inject(this);
+        Realm.init(this);
+        Stetho.initializeWithDefaults(this);
+
+
+//        Stetho.initialize(
+//                Stetho.newInitializerBuilder(this)
+//                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+//                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+//                        .build());
 
     }
 

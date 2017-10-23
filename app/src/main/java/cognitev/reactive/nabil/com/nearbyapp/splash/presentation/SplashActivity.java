@@ -56,6 +56,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     private boolean mRequestingLocationUpdates;
 
     View layoutError;
+    View layoutLoading;
     private ImageView errorImage;
     private TextView errorText;
     private List<SplashViewModel> splashViewModelsList;
@@ -164,6 +165,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     private void initViews() {
         locationRecyclerView = (RecyclerView) findViewById(R.id.locationsList);
         initErrorLayout();
+        initLoadingLayout();
 
         splashViewModelsList = new ArrayList<>();
 
@@ -179,6 +181,13 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         layoutError.setVisibility(View.GONE);
         errorImage = (ImageView) layoutError.findViewById(R.id.image_error);
         errorText = (TextView) layoutError.findViewById(R.id.text_error);
+    }
+
+    private void initLoadingLayout() {
+        layoutLoading = findViewById(R.id.layout_loading);
+        layoutLoading.setVisibility(View.GONE);
+//        errorImage = (ImageView) layoutLoading.findViewById(R.id.image_error);
+//        errorText = (TextView) layoutLoading.findViewById(R.id.text_error);
     }
 
 
@@ -211,6 +220,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     @Override
     public void EmptyData() {
         layoutError.setVisibility(View.VISIBLE);
+        layoutLoading.setVisibility(View.GONE);
         locationRecyclerView.setVisibility(View.GONE);
 
         errorImage.setImageResource(android.R.drawable.stat_notify_error);
@@ -225,6 +235,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     public void displayError() {
         hideProgress();
         layoutError.setVisibility(View.VISIBLE);
+        layoutLoading.setVisibility(View.GONE);
         locationRecyclerView.setVisibility(View.GONE);
 
         errorText.setText(getString(R.string.something_went_wrong));
@@ -250,11 +261,20 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     }
 
     protected void showProgress() {
-        progressDialog.show();
+//        progressDialog.show();
+
+        layoutLoading.setVisibility(View.VISIBLE);
+        layoutError.setVisibility(View.GONE);
+        locationRecyclerView.setVisibility(View.GONE);
     }
 
     protected void hideProgress() {
-        progressDialog.dismiss();
+//        progressDialog.dismiss();
+
+
+        layoutLoading.setVisibility(View.GONE);
+        layoutError.setVisibility(View.GONE);
+        locationRecyclerView.setVisibility(View.VISIBLE);
     }
 
 
