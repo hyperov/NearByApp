@@ -24,7 +24,7 @@ public class Constants {
     public static final int SETTING_SHARED_VALUE_REALTIME = 11;
     public static final int SETTING_SHARED_VALUE_SINGLE_UPDATE = 22;
 
-    public static final String IMAGE_SIZE = "100x100";
+    public static final String IMAGE_SIZE = "300x300";
 
 
     public static final int REQUEST_CODE_GET_LOCATION_PERMISSION = 11;
