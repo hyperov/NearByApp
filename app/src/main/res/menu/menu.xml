@@ -6,7 +6,7 @@
         android:id="@+id/action_real_time"
         android:orderInCategory="200"
         android:title="@string/real_time"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_single_update"

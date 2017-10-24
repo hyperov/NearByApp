@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -77,6 +78,12 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+
+        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle(R.string.app_name);
 
         if (AppUtils.getSettingFromPref(this) == 0)
             AppUtils.saveSettingPreferences(this, SETTING_SHARED_VALUE_REALTIME);
