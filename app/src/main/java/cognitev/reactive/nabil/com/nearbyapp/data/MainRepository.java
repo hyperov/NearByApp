@@ -12,7 +12,7 @@ import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.Local;
 import cognitev.reactive.nabil.com.nearbyapp.dependencyinjection.Remote;
 import io.reactivex.Observable;
 
-import static com.google.android.gms.internal.zzt.TAG;
+
 
 /**
  * Created by anabil on 10/21/2017.
@@ -23,6 +23,8 @@ public class MainRepository implements Repository {
 
     private Repository localRepository;
     private Repository remoteRepository;
+
+    public static String TAG =MainRepository.class.getSimpleName();
 
     @Inject
     public MainRepository(@Local Repository localRepository, @Remote Repository remoteRepository) {
