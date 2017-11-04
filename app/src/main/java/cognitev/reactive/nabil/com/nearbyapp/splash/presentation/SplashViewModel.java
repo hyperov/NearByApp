@@ -53,4 +53,6 @@ public class SplashViewModel {
     public void setAddress(String address) {
         this.address = address;
     }
+
+
 }

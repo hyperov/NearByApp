@@ -22,6 +22,8 @@ import static cognitev.reactive.nabil.com.nearbyapp.Utils.Constants.SETTING_SHAR
 
 public class AppUtils {
 
+    public static boolean cache;
+
     private String handleError(Throwable throwable) {
 
         if (throwable instanceof IOException)

@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import cognitev.reactive.nabil.com.nearbyapp.Utils.AppUtils;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponsePhoto;
 import io.reactivex.Observable;
@@ -90,7 +91,7 @@ public class RetrofitClient {
     }
 
     Observable<ApiResponseLocation> getLocations(String location, int radius, String date) {
-
+        AppUtils.cache = false;
         return retrofitApi.getLocations(location, radius, date);
     }
 

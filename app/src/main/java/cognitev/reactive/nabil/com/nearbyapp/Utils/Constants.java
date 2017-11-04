@@ -30,4 +30,6 @@ public class Constants {
     public static final int REQUEST_CODE_GET_LOCATION_PERMISSION = 11;
 
 
+
+
 }

@@ -47,8 +47,9 @@ public class RealmRepository {
     }
 
     public Observable<LocationDb> getLocations() {
+        realm = Realm.getDefaultInstance();
         RealmResults<LocationDb> realmResults = realm.where(LocationDb.class).findAll();
         int size = realmResults.size();
-        return Observable.fromIterable(realmResults.subList(0, realmResults.size() - 1));
+        return Observable.fromIterable(realmResults.subList(0, realmResults.size() ));
     }
 }

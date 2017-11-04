@@ -124,9 +124,10 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
         mRequestingLocationUpdates = true;
 
 //        if (mGoogleApiClient.isConnected() && !mRequestingLocationUpdates) {
-        if (!AppUtils.isNetworkConnected(this))
-            displayError();
-        else if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
+//        if (!AppUtils.isNetworkConnected(this))
+//            displayError();
+//        else
+            if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
             checkLocationPermissions();
         }
     }
@@ -364,7 +365,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
         String newLocationText = String.valueOf(location.getLatitude()).concat(",").concat(String.valueOf(location.getLongitude()));
 
-        if (AppUtils.isNetworkConnected(this)) {
+//        if (AppUtils.isNetworkConnected(this)) {
             Location oldLocation = AppUtils.getLocationFromPref(this);
             boolean first = oldLocation != null;
 
@@ -386,8 +387,8 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
                 AppUtils.saveLocationPreferences(this, location);
             }
 
-        } else
-            displayError();
+//        } else
+//            displayError();
 
     }
 

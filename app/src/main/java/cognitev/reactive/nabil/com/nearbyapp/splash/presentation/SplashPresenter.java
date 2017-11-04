@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import cognitev.reactive.nabil.com.nearbyapp.Utils.AppUtils;
 import cognitev.reactive.nabil.com.nearbyapp.Utils.Constants;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.location.GroupsItem;
@@ -101,7 +102,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                             } else {
                                 GroupsItem groupsItem = response.getGroups().get(0);
                                 List<ItemsItem> items = groupsItem.getItems();
-                                displayLocationsViewData(items);
+                                displayLocationsViewData(items, connection);
 //                                String name = groupsItem.getName();
 //                                groupsItem.getItems().
 
@@ -116,7 +117,7 @@ public class SplashPresenter implements SplashContract.Presenter {
         return null;
     }
 
-    private void displayLocationsViewData(List<ItemsItem> items) {
+    private void displayLocationsViewData(List<ItemsItem> items, boolean connection) {
         splashViewModelObservable = Observable.fromIterable(items).flatMap(itemsItem ->
                 {
                     String name = itemsItem.getVenue().getName();
@@ -140,33 +141,35 @@ public class SplashPresenter implements SplashContract.Presenter {
                                 view.displayData(splashViewModels);
 
                         }));
-        mSubscriptions.add(
-                splashViewModelObservable
-                        .flatMap(splashViewModel ->
-                        {
-                            String id = splashViewModel.getId();
-                            Observable<ImageViewModel> imageObservable = getImageObservable(id, 1);
-                            ImageViewModel imageViewModel = imageObservable.
-                                    doOnError(throwable -> Log.e(TAG, "displayLocationsViewData: get image", throwable))
-                                    .blockingFirst();
+        if (connection) {
+            mSubscriptions.add(
+                    splashViewModelObservable
+                            .flatMap(splashViewModel ->
+                            {
+                                String id = splashViewModel.getId();
+                                Observable<ImageViewModel> imageObservable = getImageObservable(id, 1);
+                                ImageViewModel imageViewModel = imageObservable.
+                                        doOnError(throwable -> Log.e(TAG, "displayLocationsViewData: get image", throwable))
+                                        .blockingFirst();
 
-                            String url = imageViewModel.getPrefix()
-                                    .concat(Constants.IMAGE_SIZE)
-                                    .concat(imageViewModel.getSuffix());
-                            splashViewModel.setImageUrl(url);
-                            return Observable.just(splashViewModel);
-                        })
-                        .toList()
-                        .subscribeOn(Schedulers.io()).
-                        observeOn(AndroidSchedulers.mainThread()).
-                        subscribe((splashViewModels, throwable) ->
-                        {
-                            if (throwable != null)
-                                view.displayError();
-                            else
-                                view.updateData(splashViewModels);
+                                String url = imageViewModel.getPrefix()
+                                        .concat(Constants.IMAGE_SIZE)
+                                        .concat(imageViewModel.getSuffix());
+                                splashViewModel.setImageUrl(url);
+                                return Observable.just(splashViewModel);
+                            })
+                            .toList()
+                            .subscribeOn(Schedulers.io()).
+                            observeOn(AndroidSchedulers.mainThread()).
+                            subscribe((splashViewModels, throwable) ->
+                            {
+                                if (throwable != null && !AppUtils.cache)
+                                    view.displayError();
+                                else
+                                    view.updateData(splashViewModels);
 
-                        }));
+                            }));
+        }
     }
 
     @Override
