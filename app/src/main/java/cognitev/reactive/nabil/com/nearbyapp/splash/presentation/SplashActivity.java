@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -127,7 +128,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 //        if (!AppUtils.isNetworkConnected(this))
 //            displayError();
 //        else
-            if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
+        if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
             checkLocationPermissions();
         }
     }
@@ -365,7 +366,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
 
         String newLocationText = String.valueOf(location.getLatitude()).concat(",").concat(String.valueOf(location.getLongitude()));
 
-//        if (AppUtils.isNetworkConnected(this)) {
+        if (AppUtils.isNetworkConnected(this)) {
             Location oldLocation = AppUtils.getLocationFromPref(this);
             boolean first = oldLocation != null;
 
@@ -387,8 +388,15 @@ public class SplashActivity extends BaseActivity implements SplashContract.View,
                 AppUtils.saveLocationPreferences(this, location);
             }
 
-//        } else
-//            displayError();
+
+        } else {
+            displayError();
+            Snackbar.make(findViewById(R.id.cordinator), "No Connection", 1000 * 20).
+                    setActionTextColor(getResources().getColor(R.color.colorPrimaryDark)).
+                    setAction("GO OFFLINE", view ->
+                            presenter.getLocations(newLocationText, 1000, AppUtils.isNetworkConnected(this))
+                    ).show();
+        }
 
     }
 

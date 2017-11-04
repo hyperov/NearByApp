@@ -34,6 +34,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:text="TextView"
+                android:textColor="@color/primaryText"
                 android:textSize="60sp"
                 app:layout_constraintLeft_toRightOf="@+id/image_list"
                 app:layout_constraintTop_toTopOf="@+id/image_list" />
@@ -45,8 +46,8 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
-                android:textColor="@color/secondaryText"
                 android:text="TextView"
+                android:textColor="@color/secondaryText"
                 android:textSize="45sp" />
 
         </LinearLayout>
@@ -62,7 +63,6 @@
         app:layout_constraintTop_toBottomOf="@+id/address" />
 </LinearLayout>
 
-    <!--android:layout_marginEnd="72dp"-->
-    <!--android:layout_marginStart="44dp"-->
+    <!--android:layout_marginEnd="72dp"--><!--android:layout_marginStart="44dp"-->
 
 
