@@ -23,14 +23,20 @@ public class RealmRepository {
 
     public boolean saveLocation(String name, String locationId, String address) {
         realm = Realm.getDefaultInstance();
-        realm.executeTransaction(realm -> {
-            LocationDb locationDb = realm.createObject(LocationDb.class, String.valueOf(++primary));
-            locationDb.setAddress(address);
-            locationDb.setLocationId(locationId);
-            locationDb.setName(name);
-        }
+        if (realm.isInTransaction())
+            realm.commitTransaction();
+
+        realm.beginTransaction();
+//        realm.executeTransaction(realm -> {
+        primary++;
+        LocationDb locationDb = realm.createObject(LocationDb.class, String.valueOf(primary));
+        locationDb.setAddress(address);
+        locationDb.setLocationId(locationId);
+        locationDb.setName(name);
+        realm.commitTransaction();
+//        }
 //        ,error -> Log.e("saveLocation: ",error.getMessage() )
-        );
+//        );
 
 //        realm.commitTransaction();
 //        try {
@@ -50,6 +56,6 @@ public class RealmRepository {
         realm = Realm.getDefaultInstance();
         RealmResults<LocationDb> realmResults = realm.where(LocationDb.class).findAll();
         int size = realmResults.size();
-        return Observable.fromIterable(realmResults.subList(0, realmResults.size() ));
+        return Observable.fromIterable(realmResults.subList(0, realmResults.size()));
     }
 }
