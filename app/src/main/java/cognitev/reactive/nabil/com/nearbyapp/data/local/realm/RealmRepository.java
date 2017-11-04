@@ -13,30 +13,40 @@ import io.realm.RealmResults;
 public class RealmRepository {
 
 
-    private final Realm realm;
+    private Realm realm;
+    private static int primary = 0;
 
     @Inject
     public RealmRepository() {
-        realm = Realm.getDefaultInstance();
 
     }
 
-   public boolean saveLocation(String name, String locationId, String address) {
-        LocationDb locationDb = new LocationDb(name, address, locationId);
-        try {
-            realm.insert(locationDb);
-        } catch (Exception e) {
-
+    public boolean saveLocation(String name, String locationId, String address) {
+        realm = Realm.getDefaultInstance();
+        realm.executeTransaction(realm -> {
+            LocationDb locationDb = realm.createObject(LocationDb.class, String.valueOf(++primary));
+            locationDb.setAddress(address);
+            locationDb.setLocationId(locationId);
+            locationDb.setName(name);
         }
+//        ,error -> Log.e("saveLocation: ",error.getMessage() )
+        );
+
+//        realm.commitTransaction();
+//        try {
+//            realm.insert(locationDb);
+//        } catch (Exception e) {
+//
+//        }
 
         return true;
     }
 
-   public void deleteAll() {
+    public void deleteAll() {
         realm.deleteAll();
     }
 
-   public Observable<LocationDb> getLocations() {
+    public Observable<LocationDb> getLocations() {
         RealmResults<LocationDb> realmResults = realm.where(LocationDb.class).findAll();
         int size = realmResults.size();
         return Observable.fromIterable(realmResults.subList(0, realmResults.size() - 1));

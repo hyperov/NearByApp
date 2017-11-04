@@ -62,8 +62,10 @@ public class App extends Application implements HasActivityInjector {
                 .presentation(new PresentationModule()).UseCases(new UseCaseModule())
                 .build().inject(this);
 
-//        appComponent.inject(this);
         Realm.init(this);
+
+
+//        appComponent.inject(this);
         Stetho.initializeWithDefaults(this);
 
 
