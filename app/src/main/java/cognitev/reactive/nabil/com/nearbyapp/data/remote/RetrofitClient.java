@@ -1,8 +1,5 @@
 package cognitev.reactive.nabil.com.nearbyapp.data.remote;
 
-import android.support.annotation.NonNull;
-
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -12,10 +9,8 @@ import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponseLocation;
 import cognitev.reactive.nabil.com.nearbyapp.data.model.ApiResponsePhoto;
 import io.reactivex.Observable;
 import okhttp3.HttpUrl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -53,29 +48,25 @@ public class RetrofitClient {
         okHttpClientBuilder.addInterceptor(httpLoggingInterceptor);
         okHttpClientBuilder.connectTimeout(10, TimeUnit.SECONDS);
         okHttpClientBuilder.readTimeout(10, TimeUnit.SECONDS);
-        okHttpClientBuilder.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(@NonNull Chain chain) throws IOException {
+        okHttpClientBuilder.addInterceptor( chain -> {
 
-                Request request = chain.request();
+            Request request = chain.request();
 
-                HttpUrl originalHttpUrl = request.url();
+            HttpUrl originalHttpUrl = request.url();
 
-                HttpUrl url = originalHttpUrl.newBuilder()
-                        .addQueryParameter(CLIENT_ID_KEY, CLIENT_ID_VALUE)
-                        .addQueryParameter(CLIENT_SECRET_KEY, CLIENT_SECRET_VALUE)
-                        .build();
+            HttpUrl url = originalHttpUrl.newBuilder()
+                    .addQueryParameter(CLIENT_ID_KEY, CLIENT_ID_VALUE)
+                    .addQueryParameter(CLIENT_SECRET_KEY, CLIENT_SECRET_VALUE)
+                    .build();
 
 
-                Request.Builder builder = request.newBuilder()
-                        .header(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE)
-                        .url(url);
+            Request.Builder builder = request.newBuilder()
+                    .header(CONTENT_TYPE_KEY, CONTENT_TYPE_VALUE)
+                    .url(url);
 
 
-                return chain.proceed(builder.build());
-            }
-
-        });
+            return chain.proceed(builder.build());
+        } );
 
 
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
